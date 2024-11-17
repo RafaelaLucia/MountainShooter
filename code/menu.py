@@ -20,25 +20,40 @@ class Menu:
         self.window.blit(source=text_surf, dest=text_rect)
 
     def run(self, ):
+        menu_option = 0
         pygame.mixer_music.load('./asset/menu.mp3')
         pygame.mixer_music.play(-1)
         while True:
+            #desenhar imagens
             self.window.blit(source=self.surf, dest=self.rect)
             self.menu_text(50, "Lucky", COLOR_ORANGE, ((WIN_WIDTH / 2), 120))
             self.menu_text(50, "The Shooter", COLOR_ORANGE, ((WIN_WIDTH / 2), 163))
 
             for i in range(len(MENU_OPTION)):
-                self.menu_text(20, MENU_OPTION[i], COLOR_WHITE, ((WIN_WIDTH / 2), 300 + 30 * i))
-
-
+                if i == menu_option:
+                    self.menu_text(20, MENU_OPTION[i], COLOR_ORANGE, ((WIN_WIDTH / 2), 300 + 30 * i))
+                else:
+                    self.menu_text(20, MENU_OPTION[i], COLOR_WHITE, ((WIN_WIDTH / 2), 300 + 30 * i))
             pygame.display.flip()
 
             # Verifica todos os eventos
             for event in pygame.event.get():
-               if event.type == pygame.QUIT:
+                if event.type == pygame.QUIT:
                     print('saindo...')
                     pygame.quit()  # fecha janela
                     quit()  # termina pygame
-
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_DOWN:  # Tecla para baixo
+                        if menu_option < len(MENU_OPTION) - 1:
+                            menu_option += 1
+                        else:
+                            menu_option = 0
+                    if event.key == pygame.K_UP:  # Tecla para cima
+                        if menu_option > 0:
+                            menu_option -= 1
+                        else:
+                            menu_option = len(MENU_OPTION) - 1
+                    if event.key == pygame.K_RETURN:
+                       return MENU_OPTION[menu_option]
 
 
