@@ -12,6 +12,8 @@ from code.Const import C_WHITE, WIN_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME
 from code.EntityMediator import EntityMediator
 from code.enemy import Enemy
 from code.entity import Entity
+from code.explosion import Explosion
+from code.gameover import GameOver
 from code.entityFactory import EntityFactory
 from code.player import Player
 
@@ -52,12 +54,23 @@ class Level:
                     self.level_text(14, f'Player1 - Health: {ent.health} | Score: {ent.score}', C_GREEN, (10, 25))
                 if ent.name == 'Player2':
                     self.level_text(14, f'Player2 - Health: {ent.health} | Score: {ent.score}', C_CYAN, (10, 45))
+
+                # Atualiza explosões
+                if isinstance(ent, Explosion):
+                    if ent.update():
+                        self.entity_list.remove(ent)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
                 if event.type == EVENT_ENEMY:
-                    choice = random.choice(('Enemy1', 'Enemy2'))
+                    if self.name == 'Level2':
+                        choice = random.choice(('Enemy3', 'Enemy4'))
+                    elif self.name == 'Level3':
+                        choice = random.choice(('Enemy5', 'Enemy6'))
+                    else:
+                        choice = random.choice(('Enemy1', 'Enemy2'))
                     self.entity_list.append(EntityFactory.get_entity(choice))
                 if event.type == EVENT_TIMEOUT:
                     self.timeout -= TIMEOUT_STEP
@@ -75,7 +88,13 @@ class Level:
                         found_player = True
 
                 if not found_player:
-                    return False
+                    game_over_screen = GameOver(self.window, player_score)
+                    action = game_over_screen.run()
+                    if action == "restart":
+                        return False  # Voltar ao menu ou reiniciar o nível
+                    else:
+                        pygame.quit()
+                        sys.exit()
 
             # printed text
             self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', C_WHITE, (10, 5))

@@ -6,6 +6,8 @@ C_YELLOW = (255, 255, 128)
 C_WHITE = (255, 255, 255)
 C_GREEN = (0, 128, 0)
 C_CYAN = (0, 128, 128)
+C_RED = (237, 28, 36)
+C_BLACK = (0, 0, 0)
 
 # E
 EVENT_ENEMY = pygame.USEREVENT + 1
@@ -25,6 +27,16 @@ ENTITY_SPEED = {
     'Level2Bg4': 4,
     'Level2Bg5': 5,
     'Level2Bg6': 6,
+    'Level3Bg0': 0,
+    'Level3Bg1': 1,
+    'Level3Bg2': 2,
+    'Level3Bg3': 3,
+    'Level3Bg4': 4,
+    'Level3Bg5': 5,
+    'Level3Bg6': 6,
+    'Level3Bg7': 7,
+    'Level3Bg8': 8,
+    'Level3Bg9': 9,
     'Player1': 3,
     'Player1Shot': 3,
     'Player2': 3,
@@ -32,7 +44,16 @@ ENTITY_SPEED = {
     'Enemy1': 2,
     'Enemy1Shot': 5,
     'Enemy2': 2,
-    'Enemy2Shot': 2,
+    'Enemy2Shot': 5,
+    'Enemy3': 2,
+    'Enemy3Shot': 5,
+    'Enemy4': 2,
+    'Enemy4Shot': 5,
+    'Enemy5': 2,
+    'Enemy5Shot': 5,
+    'Enemy6': 2,
+    'Enemy6Shot': 5,
+    'Explosion': 0,
 }
 
 ENTITY_HEALTH = {
@@ -50,6 +71,16 @@ ENTITY_HEALTH = {
     'Level2Bg4': 999,
     'Level2Bg5': 999,
     'Level2Bg6': 999,
+    'Level3Bg0': 999,
+    'Level3Bg1': 999,
+    'Level3Bg2': 999,
+    'Level3Bg3': 999,
+    'Level3Bg4': 999,
+    'Level3Bg5': 999,
+    'Level3Bg6': 999,
+    'Level3Bg7': 999,
+    'Level3Bg8': 999,
+    'Level3Bg9': 999,
     'Player1': 300,
     'Player1Shot': 1,
     'Player2': 300,
@@ -58,6 +89,15 @@ ENTITY_HEALTH = {
     'Enemy1Shot': 1,
     'Enemy2': 60,
     'Enemy2Shot': 1,
+    'Enemy3': 60,
+    'Enemy3Shot': 1,
+    'Enemy4': 60,
+    'Enemy4Shot': 1,
+    'Enemy5': 60,
+    'Enemy5Shot': 1,
+    'Enemy6': 60,
+    'Enemy6Shot': 1,
+    'Explosion': 0,
 }
 
 ENTITY_DAMAGE = {
@@ -75,6 +115,16 @@ ENTITY_DAMAGE = {
     'Level2Bg4': 0,
     'Level2Bg5': 0,
     'Level2Bg6': 0,
+    'Level3Bg0': 0,
+    'Level3Bg1': 0,
+    'Level3Bg2': 0,
+    'Level3Bg3': 0,
+    'Level3Bg4': 0,
+    'Level3Bg5': 0,
+    'Level3Bg6': 0,
+    'Level3Bg7': 0,
+    'Level3Bg8': 0,
+    'Level3Bg9': 0,
     'Player1': 1,
     'Player1Shot': 25,
     'Player2': 1,
@@ -83,6 +133,15 @@ ENTITY_DAMAGE = {
     'Enemy1Shot': 20,
     'Enemy2': 1,
     'Enemy2Shot': 15,
+    'Enemy3': 1,
+    'Enemy3Shot': 15,
+    'Enemy4': 1,
+    'Enemy4Shot': 15,
+    'Enemy5': 1,
+    'Enemy5Shot': 25,
+    'Enemy6': 1,
+    'Enemy6Shot': 25,
+    'Explosion': 0,
 }
 
 ENTITY_SCORE = {
@@ -100,6 +159,16 @@ ENTITY_SCORE = {
     'Level2Bg4': 0,
     'Level2Bg5': 0,
     'Level2Bg6': 0,
+    'Level3Bg0': 0,
+    'Level3Bg1': 0,
+    'Level3Bg2': 0,
+    'Level3Bg3': 0,
+    'Level3Bg4': 0,
+    'Level3Bg5': 0,
+    'Level3Bg6': 0,
+    'Level3Bg7': 0,
+    'Level3Bg8': 0,
+    'Level3Bg9': 0,
     'Player1': 0,
     'Player1Shot': 0,
     'Player2': 0,
@@ -108,6 +177,15 @@ ENTITY_SCORE = {
     'Enemy1Shot': 0,
     'Enemy2': 125,
     'Enemy2Shot': 0,
+    'Enemy3': 125,
+    'Enemy3Shot': 0,
+    'Enemy4': 125,
+    'Enemy4Shot': 0,
+    'Enemy5': 125,
+    'Enemy5Shot': 0,
+    'Enemy6': 125,
+    'Enemy6Shot': 0,
+    'Explosion': 0,
 }
 
 ENTITY_SHOT_DELAY = {
@@ -115,6 +193,11 @@ ENTITY_SHOT_DELAY = {
     'Player2': 15,
     'Enemy1': 100,
     'Enemy2': 200,
+    'Enemy3': 100,
+    'Enemy4': 100,
+    'Enemy5': 100,
+    'Enemy6': 100,
+    'Explosion': 0,
 }
 
 # M
@@ -137,7 +220,7 @@ PLAYER_KEY_SHOOT = {'Player1': pygame.K_LCTRL,
                     'Player2': pygame.K_LCTRL}
 
 # S
-SPAWN_TIME = 2000
+SPAWN_TIME = 1600
 
 # T
 TIMEOUT_STEP = 100  # 100ms
@@ -147,18 +230,19 @@ WIN_WIDTH = 800
 WIN_HEIGHT = 600
 
 # S
-SCORE_POS = {'Title': (WIN_WIDTH / 2, 50),
-             'EnterName': (WIN_WIDTH / 2, 80),
-             'Label': (WIN_WIDTH / 2, 90),
-             'Name': (WIN_WIDTH / 2, 110),
-             0: (WIN_WIDTH / 2, 110),
-             1: (WIN_WIDTH / 2, 130),
-             2: (WIN_WIDTH / 2, 150),
-             3: (WIN_WIDTH / 2, 170),
-             4: (WIN_WIDTH / 2, 190),
-             5: (WIN_WIDTH / 2, 210),
-             6: (WIN_WIDTH / 2, 230),
-             7: (WIN_WIDTH / 2, 250),
-             8: (WIN_WIDTH / 2, 270),
-             9: (WIN_WIDTH / 2, 290),
+SCORE_POS = {'Title': (WIN_WIDTH / 2, 90),
+             'EnterName': (WIN_WIDTH / 2, 100),
+             'Label': (WIN_WIDTH / 2, 150),
+             'Name': (WIN_WIDTH / 2, 400),
+             0: (WIN_WIDTH / 2, 200),
+             1: (WIN_WIDTH / 2, 220),
+             2: (WIN_WIDTH / 2, 240),
+             3: (WIN_WIDTH / 2, 260),
+             4: (WIN_WIDTH / 2, 280),
+             5: (WIN_WIDTH / 2, 300),
+             6: (WIN_WIDTH / 2, 320),
+             7: (WIN_WIDTH / 2, 340),
+             8: (WIN_WIDTH / 2, 360),
+             9: (WIN_WIDTH / 2, 390),
+             'ESC': (WIN_WIDTH / 2, 400)
              }

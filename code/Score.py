@@ -5,26 +5,26 @@ import pygame
 from pygame import Surface, Rect, KEYDOWN, K_RETURN, K_BACKSPACE, K_ESCAPE
 from pygame.font import Font
 
-from code.Const import C_YELLOW, SCORE_POS, MENU_OPTION, C_WHITE
+from code.Const import C_YELLOW, SCORE_POS, MENU_OPTION, C_WHITE, C_BLACK, C_ORANGE
 from code.DBProxy import DBProxy
 
 
 class Score:
     def __init__(self, window: Surface):
         self.window = window
-        self.surf = pygame.image.load('./asset/MenuPrincipal.png').convert_alpha()
+        self.surf = pygame.image.load('./asset/win.png').convert_alpha()
         self.rect = self.surf.get_rect(left=0, top=0)
         pass
 
     def save(self, game_mode: str, player_score: list[int]):
-        pygame.mixer_music.load('./asset/menu.mp3')
+        pygame.mixer_music.load('./asset/win.wav')
         pygame.mixer_music.play(-1)
         db_proxy = DBProxy('DBScore')
         name = ''
         while True:
             self.window.blit(source=self.surf, dest=self.rect)
-            self.score_text(48, 'YOU WIN!!', C_YELLOW, SCORE_POS['Title'])
-            text = 'Enter Player 1 name (4 characters):'
+            self.score_text(48, 'VOCÊ GANHOU!!', C_YELLOW, SCORE_POS['Title'])
+            text = 'Digite o Nome do Jogador 1 (4 caracteres):'
             score = player_score[0]
             if game_mode == MENU_OPTION[0]:
                 score = player_score[0]
@@ -53,7 +53,7 @@ class Score:
                     else:
                         if len(name) < 4:
                             name += event.unicode
-            self.score_text(20, name, C_WHITE, SCORE_POS['Name'])
+            self.score_text(20, name, C_BLACK, SCORE_POS['Name'])
             pygame.display.flip()
             pass
 
@@ -61,15 +61,15 @@ class Score:
         pygame.mixer_music.load('./asset/menu.mp3')
         pygame.mixer_music.play(-1)
         self.window.blit(source=self.surf, dest=self.rect)
-        self.score_text(48, 'TOP 10 SCORE', C_YELLOW, SCORE_POS['Title'])
-        self.score_text(20, 'NAME     SCORE           DATE      ', C_YELLOW, SCORE_POS['Label'])
+        self.score_text(48, 'TOP 10 SCORE', C_BLACK, SCORE_POS['Title'])
+        self.score_text(20, 'NAME     SCORE           DATE      ', C_BLACK, SCORE_POS['Label'])
         db_proxy = DBProxy('DBScore')
         list_score = db_proxy.retrieve_top10()
         db_proxy.close()
 
         for player_score in list_score:
             id_, name, score, date = player_score
-            self.score_text(20, f'{name}     {score:07.2f}     {date}', C_YELLOW,
+            self.score_text(20, f'{name}     {score:07.2f}     {date}', C_ORANGE,
                             SCORE_POS[list_score.index(player_score)])
         while True:
             for event in pygame.event.get():
@@ -80,6 +80,8 @@ class Score:
                     if event.key == K_ESCAPE:
                         return
             pygame.display.flip()
+
+        self.score_text(20, 'Pressione ESC para voltar', C_BLACK)
 
     def score_text(self, text_size: int, text: str, text_color: tuple, text_center_pos: tuple):
         text_font: Font = pygame.font.SysFont(name="Lucida Sans Typewriter", size=text_size)

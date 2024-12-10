@@ -1,8 +1,11 @@
+import pygame
+
 from code.Const import WIN_WIDTH
 from code.EnemyShot import EnemyShot
 from code.PlayerShot import PlayerShot
 from code.enemy import Enemy
 from code.entity import Entity
+from code.explosion import Explosion
 from code.player import Player
 
 
@@ -21,7 +24,7 @@ class EntityMediator:
                 ent.health = 0
 
     @staticmethod
-    def __verify_collision_entity(ent1, ent2):
+    def __verify_collision_entity(ent1, ent2, entity_list):
         valid_interaction = False
         if isinstance(ent1, Enemy) and isinstance(ent2, PlayerShot):
             valid_interaction = True
@@ -42,15 +45,27 @@ class EntityMediator:
                 ent1.last_dmg = ent2.name
                 ent2.last_dmg = ent1.name
 
+                # Adiciona a explosão se o inimigo morrer
+                if ent1.health <= 0 and isinstance(ent1, Enemy):
+                    # Criar a explosão na posição do inimigo
+                    explosion = Explosion(ent1.rect.center)
+                    entity_list.append(explosion)  # Adiciona a explosão à lista de entidades
+                if ent2.health <= 0 and isinstance(ent2, Enemy):
+                    # Criar a explosão na posição do inimigo
+                    explosion = Explosion(ent2.rect.center)
+                    entity_list.append(explosion)  # Adiciona a explosão à lista de entidades
+
     @staticmethod
     def __give_score(enemy: Enemy, entity_list: list[Entity]):
         if enemy.last_dmg == 'Player1Shot':
             for ent in entity_list:
-                if ent.name == 'Player1':
+                if isinstance(ent, Player) and ent.name == 'Player1':  # Verifica se é um Player
                     ent.score += enemy.score
+                    explosion_sound = pygame.mixer.Sound('./asset/explosionSound.wav')
+                    explosion_sound.play()
         elif enemy.last_dmg == 'Player2Shot':
             for ent in entity_list:
-                if ent.name == 'Player2':
+                if isinstance(ent, Player) and ent.name == 'Player2':
                     ent.score += enemy.score
 
     @staticmethod
@@ -60,7 +75,7 @@ class EntityMediator:
             EntityMediator.__verify_collision_window(entity1)
             for j in range(i + 1, len(entity_list)):
                 entity2 = entity_list[j]
-                EntityMediator.__verify_collision_entity(entity1, entity2)
+                EntityMediator.__verify_collision_entity(entity1, entity2, entity_list)
 
     @staticmethod
     def verify_health(entity_list: list[Entity]):
@@ -68,4 +83,28 @@ class EntityMediator:
             if ent.health <= 0:
                 if isinstance(ent, Enemy):
                     EntityMediator.__give_score(ent, entity_list)
+                entity_list.remove(ent)
+
+    @staticmethod
+    def update_explosions(entity_list: list[Entity]):
+        for entity in entity_list[
+                      :]:  # Iterando sobre uma cópia da lista para evitar modificar a lista durante a iteração
+            if isinstance(entity, Explosion):
+                if not entity.update():  # Se a explosão não deve mais ser exibida
+                    entity_list.remove(entity)  # Remover a explosão da lista
+
+    @staticmethod
+    def __give_explosion(entity_list: list[Entity], x, y):
+        # Passa (x, y) como uma tupla para a Explosion
+        explosion = Explosion((x, y))
+        entity_list.append(explosion)
+
+    @staticmethod
+    def verify_health(entity_list: list[Entity]):
+        for ent in entity_list:
+            if ent.health <= 0:
+                if isinstance(ent, Enemy):
+                    EntityMediator.__give_score(ent, entity_list)
+                    # Adicionar explosão no local do inimigo
+                    EntityMediator.__give_explosion(entity_list, ent.rect.centerx, ent.rect.centery)
                 entity_list.remove(ent)
