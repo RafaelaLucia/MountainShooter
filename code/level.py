@@ -8,7 +8,7 @@ from pygame import Surface, Rect
 from pygame.font import Font
 
 from code.Const import C_WHITE, WIN_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME, C_GREEN, C_CYAN, EVENT_TIMEOUT, \
-    TIMEOUT_STEP, TIMEOUT_LEVEL
+    TIMEOUT_STEP, TIMEOUT_LEVEL, TIMEOUT_LEVEL3
 from code.EntityMediator import EntityMediator
 from code.enemy import Enemy
 from code.entity import Entity
@@ -21,6 +21,7 @@ from code.player import Player
 class Level:
     def __init__(self, window: Surface, name: str, game_mode: str, player_score: list[int]):
         self.timeout = TIMEOUT_LEVEL
+        self.timeoutLevel3 = TIMEOUT_LEVEL3
         self.window = window
         self.name = name
         self.game_mode = game_mode
@@ -55,7 +56,6 @@ class Level:
                 if ent.name == 'Player2':
                     self.level_text(14, f'Player2 - Health: {ent.health} | Score: {ent.score}', C_CYAN, (10, 45))
 
-                # Atualiza explosões
                 if isinstance(ent, Explosion):
                     if ent.update():
                         self.entity_list.remove(ent)
@@ -73,14 +73,24 @@ class Level:
                         choice = random.choice(('Enemy1', 'Enemy2'))
                     self.entity_list.append(EntityFactory.get_entity(choice))
                 if event.type == EVENT_TIMEOUT:
-                    self.timeout -= TIMEOUT_STEP
-                    if self.timeout == 0:
-                        for ent in self.entity_list:
-                            if isinstance(ent, Player) and ent.name == 'Player1':
-                                player_score[0] = ent.score
-                            if isinstance(ent, Player) and ent.name == 'Player2':
-                                player_score[1] = ent.score
-                        return True
+                    if self.name == 'Level3':
+                        self.timeoutLevel3 -= TIMEOUT_STEP
+                        if self.timeoutLevel3 <= 0:
+                            for ent in self.entity_list:
+                                if isinstance(ent, Player) and ent.name == 'Player1':
+                                    player_score[0] = ent.score
+                                if isinstance(ent, Player) and ent.name == 'Player2':
+                                    player_score[1] = ent.score
+                            return True
+                    else:
+                        self.timeout -= TIMEOUT_STEP
+                        if self.timeout <= 0:
+                            for ent in self.entity_list:
+                                if isinstance(ent, Player) and ent.name == 'Player1':
+                                    player_score[0] = ent.score
+                                if isinstance(ent, Player) and ent.name == 'Player2':
+                                    player_score[1] = ent.score
+                            return True
 
                 found_player = False
                 for ent in self.entity_list:
@@ -91,13 +101,17 @@ class Level:
                     game_over_screen = GameOver(self.window, player_score)
                     action = game_over_screen.run()
                     if action == "restart":
-                        return False  # Voltar ao menu ou reiniciar o nível
+                        return False
                     else:
                         pygame.quit()
                         sys.exit()
 
-            # printed text
-            self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', C_WHITE, (10, 5))
+           # printed text
+           # self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', C_WHITE, (10, 5))
+            if self.name == 'Level3':
+                self.level_text(14, f'{self.name} - Timeout: {self.timeoutLevel3 / 1000:.1f}s', C_WHITE, (10, 5))
+            else:
+                self.level_text(14, f'{self.name} - Timeout: {self.timeout / 1000:.1f}s', C_WHITE, (10, 5))
             self.level_text(14, f'fps: {clock.get_fps():.0f}', C_WHITE, (10, WIN_HEIGHT - 35))
             self.level_text(14, f'entidades: {len(self.entity_list)}', C_WHITE, (10, WIN_HEIGHT - 20))
             pygame.display.flip()

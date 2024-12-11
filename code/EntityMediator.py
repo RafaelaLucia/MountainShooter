@@ -45,21 +45,18 @@ class EntityMediator:
                 ent1.last_dmg = ent2.name
                 ent2.last_dmg = ent1.name
 
-                # Adiciona a explosão se o inimigo morrer
                 if ent1.health <= 0 and isinstance(ent1, Enemy):
-                    # Criar a explosão na posição do inimigo
                     explosion = Explosion(ent1.rect.center)
-                    entity_list.append(explosion)  # Adiciona a explosão à lista de entidades
+                    entity_list.append(explosion)
                 if ent2.health <= 0 and isinstance(ent2, Enemy):
-                    # Criar a explosão na posição do inimigo
                     explosion = Explosion(ent2.rect.center)
-                    entity_list.append(explosion)  # Adiciona a explosão à lista de entidades
+                    entity_list.append(explosion)
 
     @staticmethod
     def __give_score(enemy: Enemy, entity_list: list[Entity]):
         if enemy.last_dmg == 'Player1Shot':
             for ent in entity_list:
-                if isinstance(ent, Player) and ent.name == 'Player1':  # Verifica se é um Player
+                if isinstance(ent, Player) and ent.name == 'Player1':
                     ent.score += enemy.score
                     explosion_sound = pygame.mixer.Sound('./asset/explosionSound.wav')
                     explosion_sound.play()
@@ -87,15 +84,13 @@ class EntityMediator:
 
     @staticmethod
     def update_explosions(entity_list: list[Entity]):
-        for entity in entity_list[
-                      :]:  # Iterando sobre uma cópia da lista para evitar modificar a lista durante a iteração
+        for entity in entity_list[:]:
             if isinstance(entity, Explosion):
-                if not entity.update():  # Se a explosão não deve mais ser exibida
-                    entity_list.remove(entity)  # Remover a explosão da lista
+                if not entity.update():
+                    entity_list.remove(entity)
 
     @staticmethod
     def __give_explosion(entity_list: list[Entity], x, y):
-        # Passa (x, y) como uma tupla para a Explosion
         explosion = Explosion((x, y))
         entity_list.append(explosion)
 
@@ -105,6 +100,5 @@ class EntityMediator:
             if ent.health <= 0:
                 if isinstance(ent, Enemy):
                     EntityMediator.__give_score(ent, entity_list)
-                    # Adicionar explosão no local do inimigo
                     EntityMediator.__give_explosion(entity_list, ent.rect.centerx, ent.rect.centery)
                 entity_list.remove(ent)

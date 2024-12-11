@@ -29,14 +29,14 @@ ENTITY_SPEED = {
     'Level2Bg6': 6,
     'Level3Bg0': 0,
     'Level3Bg1': 1,
-    'Level3Bg2': 2,
-    'Level3Bg3': 3,
-    'Level3Bg4': 4,
-    'Level3Bg5': 5,
-    'Level3Bg6': 6,
-    'Level3Bg7': 7,
-    'Level3Bg8': 8,
-    'Level3Bg9': 9,
+    'Level3Bg2': 1,
+    'Level3Bg3': 2,
+    'Level3Bg4': 3,
+    'Level3Bg5': 4,
+    'Level3Bg6': 5,
+    'Level3Bg7': 6,
+    'Level3Bg8': 7,
+    'Level3Bg9': 8,
     'Player1': 3,
     'Player1Shot': 3,
     'Player2': 3,
@@ -49,9 +49,9 @@ ENTITY_SPEED = {
     'Enemy3Shot': 5,
     'Enemy4': 2,
     'Enemy4Shot': 5,
-    'Enemy5': 2,
+    'Enemy5': 3,
     'Enemy5Shot': 5,
-    'Enemy6': 2,
+    'Enemy6': 3,
     'Enemy6Shot': 5,
     'Explosion': 0,
 }
@@ -217,7 +217,7 @@ PLAYER_KEY_LEFT = {'Player1': pygame.K_LEFT,
 PLAYER_KEY_RIGHT = {'Player1': pygame.K_RIGHT,
                     'Player2': pygame.K_d}
 PLAYER_KEY_SHOOT = {'Player1': pygame.K_LCTRL,
-                    'Player2': pygame.K_LCTRL}
+                    'Player2': pygame.K_RSHIFT}
 
 # S
 SPAWN_TIME = 1600
@@ -225,15 +225,17 @@ SPAWN_TIME = 1600
 # T
 TIMEOUT_STEP = 100  # 100ms
 TIMEOUT_LEVEL = 20000  # 20s
+TIMEOUT_LEVEL3 = 40000
+
 # W
 WIN_WIDTH = 800
 WIN_HEIGHT = 600
 
 # S
 SCORE_POS = {'Title': (WIN_WIDTH / 2, 90),
-             'EnterName': (WIN_WIDTH / 2, 100),
-             'Label': (WIN_WIDTH / 2, 150),
-             'Name': (WIN_WIDTH / 2, 400),
+             'EnterName': (WIN_WIDTH / 2, 180),
+             'Label': (WIN_WIDTH / 2, 170),
+             'Name': (WIN_WIDTH / 2, 200),
              0: (WIN_WIDTH / 2, 200),
              1: (WIN_WIDTH / 2, 220),
              2: (WIN_WIDTH / 2, 240),

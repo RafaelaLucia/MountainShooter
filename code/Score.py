@@ -69,7 +69,7 @@ class Score:
 
         for player_score in list_score:
             id_, name, score, date = player_score
-            self.score_text(20, f'{name}     {score:07.2f}     {date}', C_ORANGE,
+            self.score_text(20, f'{name}     {score:07.2f}     {date}', C_WHITE,
                             SCORE_POS[list_score.index(player_score)])
         while True:
             for event in pygame.event.get():
@@ -81,7 +81,6 @@ class Score:
                         return
             pygame.display.flip()
 
-        self.score_text(20, 'Pressione ESC para voltar', C_BLACK)
 
     def score_text(self, text_size: int, text: str, text_color: tuple, text_center_pos: tuple):
         text_font: Font = pygame.font.SysFont(name="Lucida Sans Typewriter", size=text_size)
