@@ -17,7 +17,7 @@ class Entity(ABC):
         self.damage = ENTITY_DAMAGE[self.name]
         self.score = ENTITY_SCORE[self.name]
         self.last_dmg = 'None'
-
+#test
     @abstractmethod
     def move(self):
         pass
